@@ -1,0 +1,34 @@
+{
+  "name": "koop-queue",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel src --out-dir .",
+    "test": "standard src && babel-tape-runner test/*.js | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopjs/koop-queue.git"
+  },
+  "keywords": [
+    "koop"
+  ],
+  "author": "Daniel Fenton <dfenton@esri.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/koopjs/koop-queue/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop-queue#readme",
+  "dependencies": {
+    "config": "^1.17.1",
+    "ioredis": "^1.13.2",
+    "koop-logger": "^1.0.0",
+    "node-resque": "^1.1.3",
+    "object-hash": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "standard": "^5.4.1"
+  }
+}
