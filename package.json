@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "babel src --out-dir .",
-    "test": "standard src && babel-tape-runner test/*.js | tap-spec"
+    "test": "standard src && tape test/*.js | tap-spec"
   },
   "repository": {
     "type": "git",
