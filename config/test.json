@@ -1,0 +1,7 @@
+{
+  "queue": {
+    "connection": {
+      "prefix": "koop-test"
+    }
+  }
+}
