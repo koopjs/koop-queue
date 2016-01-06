@@ -1,6 +1,9 @@
 # Koop-Queue
 *A queuing system for Koop*
 
+[![npm][npm-img]][npm-url]
+[![travis][travis-image]][travis-url]
+
 ## Installation
 ### As a package
 `npm install koop-queue`
@@ -73,3 +76,8 @@ In config/:env.json
   }
 }
 ```
+[npm-img]: https://img.shields.io/npm/v/koop-queue.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/koop-queue
+[travis-image]: https://img.shields.io/travis/koopjs/koop-queue.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koopjs/koop-queue
+
