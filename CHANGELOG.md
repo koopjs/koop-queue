@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Changed
+* Works as a Koop-3.0 Plugin
+* `queue` object is exported
+
+### Fixed
+* Jobs are not added until the queue is connected
+* JSON parsing is handled in try/catch
+
 ## [0.0.1] - 2015-12-30
 ### Added
 * A new queuing system for Koop with one exposed method `enqueue`

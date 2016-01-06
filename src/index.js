@@ -1,5 +1,7 @@
 /* @flow */
+'use strict'
 const config = require('config')
+const connection = config.queue.connection
 const EventEmitter = require('events').EventEmitter
 const Resque = require('node-resque').queue
 const Logger = require('koop-logger')
@@ -10,52 +12,73 @@ const util = require('util')
 
 const jobs = new Map()
 
-function Queue (connection) {
-  if (!connection) return
-  this.q = new Resque(connection)
-  this.connected = true
+function Queue () {
+  if (!connection) throw new Error('Redis connection missing from config')
+  this.q = new Resque({connection})
   this.q.on('error', e => log.error(e))
-  initListener(new Redis(connection))
+  this.listener = initListener(connection)
 }
 
+Queue.type = 'plugin'
+Queue.plugin_name = 'queue'
+Queue.dependencies = []
+Queue.version = require('./package.json').version
+
 Queue.prototype.enqueue = function (type, options) {
-  const job = new Job()
+  const job = new Job(type, options)
   jobs.set(job.id, job)
-  options.id = job.id
-  this.q.connect(() => this.q.enqueue('koop', type, options))
+  options.job_id = job.id
+  if (!this.connected) {
+    this.q.connect(() => {
+      this.connected = true
+      this.q.enqueue('koop', type, options)
+    })
+  } else {
+    this.q.enqueue('koop', type, options)
+  }
   return job
 }
 
-function initListener (redis) {
-  redis.subscribe('jobs', () => {
-    redis.on('message', (channel, message) => {
-      handleMessage(message)
-    })
-  })
+Queue.prototype.shutdown = function () {
+  this.q.end()
+  this.listener.end()
 }
 
-function handleMessage (message) {
-  let info
+function initListener (connection) {
+  const redis = new Redis(connection)
+  redis.subscribe('jobs', () => {
+    redis.on('message', (channel, json) => {
+      handleMessage(json)
+    })
+  })
+  return redis
+}
+
+function handleMessage (json) {
+  let message
   try {
-    info = JSON.parse(message)
+    message = JSON.parse(json)
   } catch (e) {
-    return log.error(e, message)
+    return log.error(e, json)
   }
-  if (!info.status) return log.error(new Error('No status on job report'), message)
-  const job = jobs.get(info.id)
+  if (!message.status) return log.error(new Error('No status on job report'), message)
+  const job = jobs.get(message.id)
   if (!job) return
-  job.emit(info.status, info.data)
+  job.emit(message.status, message)
   if (job.status === 'finish' || job.status === 'fail') {
     jobs.delete(job.id)
   } else {
-    job.status = info.status
+    job.status = message.status
     jobs.set(job.id, job)
   }
 }
 
 function Job (type, options) {
   this.id = hash.sha1({type, options})
+  this.options = options
   this.status = 'queued'
 }
 
 util.inherits(Job, EventEmitter)
+
+module.exports = Queue
