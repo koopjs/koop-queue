@@ -4,6 +4,7 @@ const config = require('config')
 const connection = config.queue.connection
 const EventEmitter = require('events').EventEmitter
 const Resque = require('node-resque').queue
+const Scheduler = require('node-resque').scheduler
 const Logger = require('koop-logger')
 const log = new Logger(config)
 const Redis = require('ioredis')
@@ -17,6 +18,8 @@ function Queue () {
   this.q = new Resque({connection})
   this.q.on('error', e => log.error(e))
   this.listener = initListener(connection)
+  this.scheduler = initScheduler(connection)
+  this.scheduler.on('error', e => log.error(e))
 }
 
 Queue.type = 'plugin'
@@ -42,6 +45,7 @@ Queue.prototype.enqueue = function (type, options) {
 Queue.prototype.shutdown = function () {
   this.q.end()
   this.listener.end()
+  this.scheduler.end()
 }
 
 function initListener (connection) {
@@ -52,6 +56,12 @@ function initListener (connection) {
     })
   })
   return redis
+}
+
+function initScheduler (connection) {
+  const scheduler = new Scheduler({connection})
+  scheduler.connect(() => scheduler.start())
+  return scheduler
 }
 
 function handleMessage (json) {
