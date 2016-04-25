@@ -2,12 +2,13 @@
 'use strict'
 const config = require('config')
 const connection = config.queue.connection
+connection.pkg = 'redis'
 const EventEmitter = require('events').EventEmitter
 const Resque = require('node-resque').queue
 const Scheduler = require('node-resque').scheduler
 const Logger = require('koop-logger')
 const log = new Logger(config)
-const Redis = require('ioredis')
+const Redis = require('redis')
 const hash = require('object-hash')
 const util = require('util')
 
@@ -44,12 +45,12 @@ Queue.prototype.enqueue = function (type, options) {
 
 Queue.prototype.shutdown = function () {
   this.q.end()
-  this.listener.end()
+  this.listener.quit()
   this.scheduler.end()
 }
 
 function initListener (connection) {
-  const redis = new Redis(connection)
+  const redis = Redis.createClient(connection)
   redis.subscribe('jobs', () => {
     redis.on('message', (channel, json) => {
       handleMessage(json)
