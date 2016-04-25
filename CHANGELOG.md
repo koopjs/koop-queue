@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [0.1.1] - 2016-04-24
 ### Changed
 * Replace ioredis with node-redis
 
@@ -27,6 +27,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * A new queuing system for Koop with one exposed method `enqueue`
 
+[0.1.1]: https://www.github.com/koopjs/koop-queue/compare/v0.1.0...v0.1.1
 [0.1.0]: https://www.github.com/koopjs/koop-queue/compare/v0.0.3...v0.1.0
 [0.0.3]: https://www.github.com/koopjs/koop-queue/compare/v0.0.2...v0.0.3
 [0.0.2]: https://www.github.com/koopjs/koop-queue/compare/v0.0.1...v0.0.2
