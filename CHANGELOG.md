@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+* No longer throwing exception when shutting down before a job has run
+
 ## [0.1.1] - 2016-04-24
 ### Changed
 * Replace ioredis with node-redis

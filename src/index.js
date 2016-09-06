@@ -2,7 +2,6 @@
 'use strict'
 const config = require('config')
 const connection = config.queue.connection
-connection.pkg = 'redis'
 const EventEmitter = require('events').EventEmitter
 const Resque = require('node-resque').queue
 const Scheduler = require('node-resque').scheduler
@@ -16,7 +15,7 @@ const jobs = new Map()
 
 function Queue () {
   if (!connection) throw new Error('Redis connection missing from config')
-  this.q = new Resque({connection})
+  this.q = new Resque({connection, pkg: 'redis'})
   this.q.on('error', e => log.error(e))
   this.listener = initListener(connection)
   this.scheduler = initScheduler(connection)
@@ -44,7 +43,7 @@ Queue.prototype.enqueue = function (type, options) {
 }
 
 Queue.prototype.shutdown = function () {
-  this.q.end()
+  if (this.connected) this.q.end()
   this.listener.quit()
   this.scheduler.end()
 }
