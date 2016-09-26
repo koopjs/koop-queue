@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 ### Fixed
 * No longer throwing exception when shutting down before a job has run
+* Fixed memory leak where jobs were never deleted from the jobs map
 
 ## [0.1.1] - 2016-04-24
 ### Changed

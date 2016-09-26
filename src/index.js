@@ -75,7 +75,7 @@ function handleMessage (json) {
   const job = jobs.get(message.id)
   if (!job) return
   job.emit(message.status, message)
-  if (job.status === 'finish' || job.status === 'fail') {
+  if (message.status === 'finish' || message.status === 'fail') {
     jobs.delete(job.id)
   } else {
     job.status = message.status
