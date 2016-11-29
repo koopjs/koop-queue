@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [0.2.0] - 2016-11-29
 ### Added
 * Delayed job option
 
@@ -36,6 +36,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 * A new queuing system for Koop with one exposed method `enqueue`
 
+[0.2.0]: https://www.github.com/koopjs/koop-queue/compare/v0.1.2...v0.2.0
 [0.1.2]: https://www.github.com/koopjs/koop-queue/compare/v0.1.1...v0.1.2
 [0.1.1]: https://www.github.com/koopjs/koop-queue/compare/v0.1.0...v0.1.1
 [0.1.0]: https://www.github.com/koopjs/koop-queue/compare/v0.0.3...v0.1.0
