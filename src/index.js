@@ -31,13 +31,14 @@ Queue.prototype.enqueue = function (type, options) {
   const job = new Job(type, options)
   jobs.set(job.id, job)
   options.job_id = job.id
+  const delay = options.delay || 0
   if (!this.connected) {
     this.q.connect(() => {
       this.connected = true
-      this.q.enqueue('koop', type, options)
+      this.q.enqueueIn(delay, 'koop', type, options)
     })
   } else {
-    this.q.enqueue('koop', type, options)
+    this.q.enqueueIn(delay, 'koop', type, options)
   }
   return job
 }
