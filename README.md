@@ -1,4 +1,6 @@
 # Koop-Queue
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/koopjs/koop-queue.svg)](https://greenkeeper.io/)
 *A queuing system for Koop*
 
 [![npm][npm-img]][npm-url]
